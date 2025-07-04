@@ -187,7 +187,15 @@ def topmemes(message):
     bot.send_message(message.chat.id, msg, parse_mode="Markdown")
 
 def run_bot():
-    bot.polling(none_stop=True)
+    try:
+        bot.polling(none_stop=True)
+    except Exception as e:
+        print(f"❌ BOT ERROR: {e}")
+
+if __name__ == '__main__':
+    threading.Thread(target=run_bot).start()
+    app.run(host="0.0.0.0", port=10000)
+
 
 if __name__ == '__main__':
     threading.Thread(target=run_bot).start()
