@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: spamek-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python spamek_bot.py
+    autoDeploy: true
+    healthCheckPath: /healthz
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
