@@ -3,10 +3,18 @@ from telebot import types
 import requests
 import random
 import os
+import threading
+from flask import Flask
 
-BOT_TOKEN = '7996470296:AAHE1v5ER1yziGNX5Eil_w-NPDUst5hRp8c'
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 VOTE_DB = {}
 bot = telebot.TeleBot(BOT_TOKEN)
+
+app = Flask(__name__)
+
+@app.route('/healthz')
+def healthz():
+    return 'OK', 200
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -178,4 +186,9 @@ def topmemes(message):
     )
     bot.send_message(message.chat.id, msg, parse_mode="Markdown")
 
-bot.polling(none_stop=True)
+def run_bot():
+    bot.polling(none_stop=True)
+
+if __name__ == '__main__':
+    threading.Thread(target=run_bot).start()
+    app.run(host="0.0.0.0", port=10000)
